@@ -1,0 +1,70 @@
+--Compresia--
+	In cazul in care programul primeste ca argument -c se creeaza o structura
+de tipul PMM_image prin intermediul functiei PPM_get_image(char *filename).
+	PPM_get_image primeste ca argument numele fisierului in care se afla imaginea
+de tipul PPM, salveaza in strucutura datele acesteia si o returneaza.
+	Daca nu exista fisier cu numele primit ca argument (img == NULL) atunci
+programul se opreste.
+	Altfel, se creeaza o structura de tipul CompressedQT(compressed quadtree) prin intermediul functiei CompQT_create(PPM_image *img, u_int32_t maxErr).
+	CompQT_create:
+	Aceasta functie genereaza un arbore cuaternar (DQTNode *root) care va retine
+informatiile din imagine.
+	Numaram nodurile si nodurile terminale din arbore cu ajutorul functiei
+DQT_count(DQTNode *root, uint32_t *colors, uint32_t *nodes);
+	Vectorul din structura de compresie va avea noduri de tipul QuadtreeNode. 
+Acesta se genereaza prin functia create_array(DQTNode *root, uint32_t nodes);
+	Se elibereaza memoria retinuta de arbore si se returneaza structura de 
+compresie.
+	
+	Se salveaza datele din structura de compresie intr-un fisier cu numele
+primit in linia de comanda, prin functia CompQT_save(CompressedQT *compQT, char* 
+filename).
+	Structura se elibereaza prin functia CompQT_free(CompressedQT **compQT).
+	Structura PPM_image se elibereaza prin PPM_free_image(PPM_image **img).
+
+--Decompresia--
+	In cazul in care programul primeste ca argument -d se citeste structura
+CompressedQT din fisierul cu numele primit ca argument in linia de comanda, cu
+ajutorul functiei CompQT_get_image(char *filename).
+	Se apeleaza functia CompQT_decompress(CompressedQT *compQt, char *filename)
+pentru decompresia structurii si salvarea imaginii cu numele primit ca argument.
+	CompQT_decompress:
+	Se creeaza arborele cuaternar al imaginii prin functia DQT_decompress_tree 
+(DQTNode *root, u_int32_t x, u_int32_t y, CompressedQT *compQt, int index).
+	Cu ajutorul acestuia se completeaza structura imaginii(PMM_image). Grid-ul
+imaginii (matricea de pixeli) se genereaza prin functia DQT_gen_grid(DQTNode *root, Pixel **grid).
+	Se salveaza imaginea ca fisier PMM prin functia PMM_save_image mentionata mai
+sus.
+	Ulterior se elibereaza memoria retinuta de structura de compresie prin 
+CompQT_free.
+
+--Mirror--
+	In cazul in care programul primeste ca argument -m vor exista doua cazuri
+	
+	h(Mirror pe orizontala):
+		Se citeste imaginea prin functia PPM_get_image.
+		Daca nu exista imagine cu numele primit (img == NULL) programul se
+	va opri.
+		Se va face mirror-ul pe orizontala prin functia Mirror_v(PPM_image
+	*img, u_int32_t maxErr).
+	 	Se salveaza imaginea ca fisier PMM prin functia PMM_save_image si
+	ulterior se elibereaza memoria retinuta de structura PPM_image prin functia
+	PMM_free_image.
+	
+	v(Mirror pe verticala):
+		Se citeste imaginea prin functia PPM_get_image.
+		Daca nu exista imaginea cu numele primit (img == NULL) programul se
+	va opri.
+		Se va face mirror-ul pe verticala prin functia Mirror_h(PPM_image
+	*img, u_int32_t maxErr).
+	 	Se salveaza imaginea ca fisier PMM prin functia PMM_save_image si
+	ulterior se elibereaza memoria retinuta de structura PPM_image prin functia
+	PMM_free_image.
+
+
+
+
+
+
+
+
