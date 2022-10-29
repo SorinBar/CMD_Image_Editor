@@ -1,3 +1,14 @@
+--Utilizare--
+		./quadtree [-c factor | -d | -m type] [fisier_intrare] [fisier_iesire] unde:
+
+	• -c factor indica faptul ca programul va rezolva cerinta 1 (factor = pragul impus pentru compresie)
+	• -d indica faptul ca programul va rezolva cerinta 2
+	• -m type indica faptul ca programul va rezolva cerinta 3 (type = tipul oglindirii si poate lua una
+	  din valorile: h - orizontala sau v - verticala)
+	• fisier_intrare1 reprezinta numele primului fisier de intrare
+	• fisier_iesire reprezinta numele fisierului de iesire, in care se va scrie, in functie de comanda
+	  primita, rezultatul executiei programului.
+	  
 --Compresia--
 	In cazul in care programul primeste ca argument -c se creeaza o structura
 de tipul PMM_image prin intermediul functiei PPM_get_image(char *filename).
